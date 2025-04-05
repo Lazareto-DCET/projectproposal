@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Game Guide</title>
+    <link rel="stylesheet" href="simple game.css">
+    <style>
+        /* Add the previous CSS styles here */
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Simple Game Guide</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#games">Game Guides</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home">
+        <h2>Welcome to the Simple Game Guide!</h2>
+        <p>Here, you'll find simple and fun games you can play with friends or alone. Learn how to play Tic-Tac-Toe, Rock-Paper-Scissors, and Guess the Number!</p>
+    </section>
+
+    <section id="games">
+        <h2>Game Guides</h2>
+
+        <!-- Tic-Tac-Toe Game -->
+        <h3>Tic-Tac-Toe</h3>
+        <p>Instructions on how to play Tic-Tac-Toe...</p>
+        <div id="ticTacToe">
+            <div class="grid">
+                <button onclick="makeMove(0)"></button>
+                <button onclick="makeMove(1)"></button>
+                <button onclick="makeMove(2)"></button>
+                <button onclick="makeMove(3)"></button>
+                <button onclick="makeMove(4)"></button>
+                <button onclick="makeMove(5)"></button>
+                <button onclick="makeMove(6)"></button>
+                <button onclick="makeMove(7)"></button>
+                <button onclick="makeMove(8)"></button>
+            </div>
+            <button onclick="resetGame()">Reset Game</button>
+        </div>
+
+        <!-- Rock, Paper, Scissors Game -->
+        <h3>Rock, Paper, Scissors</h3>
+        <div id="rockPaperScissors">
+            <button onclick="playRPS('rock')">Rock</button>
+            <button onclick="playRPS('paper')">Paper</button>
+            <button onclick="playRPS('scissors')">Scissors</button>
+            <p id="rpsResult"></p>
+        </div>
+
+        <!-- Guess the Number Game -->
+        <h3>Guess the Number</h3>
+        <p>Instructions on how to play Guess the Number...</p>
+        <div id="guessNumber">
+            <input type="number" id="guessInput" placeholder="Guess a number between 1 and 100" />
+            <button onclick="checkGuess()">Submit Guess</button>
+            <p id="guessResult"></p>
+        </div>
+    </section>
+
+    <section id="about">
+        <h2>About</h2>
+        <p>This website was created to help people enjoy simple games in their free time.</p>
+    </section>
+
+    <footer>
+        <p>© 2025 Simple Game Guide | All Rights Reserved</p>
+    </footer>
+
+    <script>
+        // ------------------------------ Tic-Tac-Toe Game ------------------------------
+
+        let board = ['', '', '', '', '', '', '', '', ''];
+        let currentPlayer = 'X';
+
+        function makeMove(index) {
+            if (board[index] === '') {
+                board[index] = currentPlayer;
+                document.querySelectorAll('#ticTacToe button')[index].innerText = currentPlayer;
+                if (checkWin()) {
+                    setTimeout(() => alert(currentPlayer + ' wins!'), 100);
+                    return;
+                }
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            }
+        }
+
+        function checkWin() {
+            const winPatterns = [
+                [0, 1, 2],
+                [3, 4, 5],
+                [6, 7, 8],
+                [0, 3, 6],
+                [1, 4, 7],
+                [2, 5, 8],
+                [0, 4, 8],
+                [2, 4, 6],
+            ];
+
+            for (const pattern of winPatterns) {
+                const [a, b, c] = pattern;
+                if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function resetGame() {
+            board = ['', '', '', '', '', '', '', '', ''];
+            currentPlayer = 'X';
+            const buttons = document.querySelectorAll('#ticTacToe button');
+            buttons.forEach(button => button.innerText = '');
+        }
+
+        // ------------------------------ Rock, Paper, Scissors Game ------------------------------
+
+        function playRPS(playerChoice) {
+            const choices = ['rock', 'paper', 'scissors'];
+            const computerChoice = choices[Math.floor(Math.random() * 3)];
+            let result = '';
+            if (playerChoice === computerChoice) {
+                result = 'It\'s a tie!';
+            } else if (
+                (playerChoice === 'rock' && computerChoice === 'scissors') ||
+                (playerChoice === 'scissors' && computerChoice === 'paper') ||
+                (playerChoice === 'paper' && computerChoice === 'rock')
+            ) {
+                result = 'You win!';
+            } else {
+                result = 'You lose!';
+            }
+            document.getElementById('rpsResult').innerText = `You chose ${playerChoice}, computer chose ${computerChoice}. ${result}`;
+        }
+
+        // ------------------------------ Guess the Number Game ------------------------------
+
+        let randomNumber = Math.floor(Math.random() * 100) + 1;
+        let attempts = 0;
+
+        function checkGuess() {
+            const guess = document.getElementById('guessInput').value;
+            attempts++;
+            let message = '';
+            if (guess < randomNumber) {
+                message = 'Too low! Try again.';
+            } else if (guess > randomNumber) {
+                message = 'Too high! Try again.';
+            } else {
+                message = `Congratulations! You guessed the number in ${attempts} attempts.`;
+                resetGuessGame();
+            }
+            document.getElementById('guessResult').innerText = message;
+        }
+
+        function resetGuessGame() {
+            randomNumber = Math.floor(Math.random() * 100) + 1;
+            attempts = 0;
+            document.getElementById('guessInput').value = '';
+        }
+    </script>
+</body>
+</html>
