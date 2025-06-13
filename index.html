@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TriGame</title>
+    <link rel="stylesheet" href="simple game.css">
+</head>
+<body>
+    <header>
+        <h1>TriGame</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#games">Game Guides</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home">
+        <h2>Welcome to TriGame!</h2>
+        <p>Here, you'll find simple and fun games you can play with friends or alone.</p>
+    </section>
+
+    <section id="games">
+        <h2>Game Guides</h2>
+
+        <!-- Tic-Tac-Toe Game -->
+        <h3>Tic-Tac-Toe</h3>
+        <div id="ticTacToe">
+            <div class="grid">
+                <button onclick="makeMove(0)"></button>
+                <button onclick="makeMove(1)"></button>
+                <button onclick="makeMove(2)"></button>
+                <button onclick="makeMove(3)"></button>
+                <button onclick="makeMove(4)"></button>
+                <button onclick="makeMove(5)"></button>
+                <button onclick="makeMove(6)"></button>
+                <button onclick="makeMove(7)"></button>
+                <button onclick="makeMove(8)"></button>
+            </div>
+            <button onclick="resetGame()">🔁 Reset Game</button>
+        </div>
+
+        <!-- Rock, Paper, Scissors Game -->
+        <h3>Rock, Paper, Scissors</h3>
+        <div id="rockPaperScissors">
+            <button onclick="playRPS('rock')">✊ Rock</button>
+            <button onclick="playRPS('paper')">✋ Paper</button>
+            <button onclick="playRPS('scissors')">✌ Scissors</button>
+            <p id="rpsResult"></p>
+        </div>
+
+        <!-- Guess the Number Game -->
+        <h3>🎯 Guess the Number</h3>
+        <div id="guessNumber">
+            <input type="number" id="guessInput" placeholder="🎯 Enter your guess..." />
+            <button onclick="checkGuess()">Submit Guess</button>
+            <p id="guessResult"></p>
+        </div>
+    </section>
+
+    <section id="about">
+        <h2>About</h2>
+        <p>This website was created to help people enjoy simple games in their free time.</p>
+    </section>
+
+    <footer>
+        <p>© 2025 Lazareto | All Rights Reserved</p>
+    </footer>
+
+    <script src="simple game.js"></script>
+
+</body>
+</html>
