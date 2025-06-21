@@ -91,8 +91,115 @@ function resetGuessGame() {
     document.getElementById('guessInput').value = '';
 }
 
-button.innerText = currentPlayer === 'X' ? '❌' : '⭕';
 
+// Dice Roll with GIF animation
+function rollDice() {
+    const diceImg = document.getElementById("diceImage");
+    const resultText = document.getElementById("diceResult");
+
+    // Show rolling GIF
+    diceImg.src = "https://media.tenor.com/I6kN-6X7nhAAAAAi/dice-roll.gif";
+    resultText.innerText = "Rolling...";
+
+    // After animation, show final result
+    setTimeout(() => {
+        const dice = Math.floor(Math.random() * 6) + 1;
+        diceImg.src = `https://upload.wikimedia.org/wikipedia/commons/${getDiceImageName(dice)}`;
+        resultText.innerText = `You rolled a ${dice}`;
+    }, 1500); // 1.5s delay
+}
+
+function getDiceImageName(num) {
+    const files = {
+        1: "1/1b/Dice-1-b.svg",
+        2: "5/5f/Dice-2-b.svg",
+        3: "b/b1/Dice-3-b.svg",
+        4: "f/fd/Dice-4-b.svg",
+        5: "0/08/Dice-5-b.svg",
+        6: "2/26/Dice-6-b.svg"
+    };
+    return files[num];
+}
+
+// Coin Toss with flipping GIF
+function tossCoin() {
+    const coinImg = document.getElementById("coinImage");
+    const resultText = document.getElementById("coinResult");
+
+    // Show flipping animation
+    coinImg.src = "https://media.tenor.com/mqFPOZ4SKeYAAAAC/coin-flip.gif";
+    resultText.innerText = "Flipping...";
+
+    // After animation, show result
+    setTimeout(() => {
+        const result = Math.random() < 0.5 ? "Heads" : "Tails";
+        const newSrc = result === "Heads"
+            ? "https://upload.wikimedia.org/wikipedia/commons/4/4e/Penny_obverse_2010.jpg"
+            : "https://upload.wikimedia.org/wikipedia/commons/4/40/Penny_reverse_2010.jpg";
+
+        coinImg.src = newSrc;
+        resultText.innerText = `Result: ${result}`;
+    }, 1500); // Delay to simulate flipping
+}
+
+// Quick Math Quiz
+let currentAnswer = 0;
+let score = 0;
+let questionCount = 0;
+
+function generateMathQuestion() {
+    const num1 = Math.floor(Math.random() * 10) + 1;
+    const num2 = Math.floor(Math.random() * 10) + 1;
+    const operators = ["+", "-", "*"];
+    const operator = operators[Math.floor(Math.random() * operators.length)];
+
+    let questionText = `${num1} ${operator} ${num2}`;
+    currentAnswer = eval(questionText);
+    document.getElementById("mathQuestion").innerText = `What is ${questionText}?`;
+    document.getElementById("mathResult").innerText = "";
+    document.getElementById("mathAnswer").value = "";
+    document.getElementById("nextBtn").style.display = "none";
+}
+
+function submitAnswer() {
+    const userInput = parseInt(document.getElementById("mathAnswer").value, 10);
+    const resultElement = document.getElementById("mathResult");
+    const nextBtn = document.getElementById("nextBtn");
+
+    if (isNaN(userInput)) {
+        resultElement.innerText = "⛔ Please enter a number!";
+        resultElement.style.color = "orange";
+        return;
+    }
+
+    if (userInput === currentAnswer) {
+        resultElement.innerText = "✅ Correct!";
+        resultElement.style.color = "green";
+        score++;
+    } else {
+        resultElement.innerText = `❌ Wrong! Correct answer: ${currentAnswer}`;
+        resultElement.style.color = "red";
+    }
+
+    questionCount++;
+    document.getElementById("mathScore").innerText = `Score: ${score} / ${questionCount}`;
+    nextBtn.style.display = "inline-block";
+}
+
+function nextQuestion() {
+    generateMathQuestion();
+}
+
+function resetQuiz() {
+    score = 0;
+    questionCount = 0;
+    document.getElementById("mathScore").innerText = "";
+    generateMathQuestion();
+}
+
+window.onload = function () {
+    generateMathQuestion();
+};
 
 
 

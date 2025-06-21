@@ -1,9 +1,23 @@
-body {
-    font-family: Arial, sans-serif;
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: linear-gradient(120deg, #f0f4f8, #d9e4f5);
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0 20 px;
     background-color: #f4f4f4;
     color: #333;
+    line-height: 1.6;
+    background-image: url('4249454.jpg'); /* Replace with your image path */
+    background-size: cover;           /* Cover full screen */
+    background-repeat: no-repeat;     /* No repeating */
+    background-position: center center; /* Center the image */
+    background-attachment: fixed;     /* Optional: fixed scrolling */ 
 }
 
 header {
@@ -11,6 +25,10 @@ header {
     color: white;
     padding: 10px;
     text-align: center;
+}
+
+header h1 {
+    margin-bottom: 10px;
 }
 
 nav ul {
@@ -25,6 +43,7 @@ nav a {
     color: white;
     text-decoration: none;
     font-weight: bold;
+    transition: color 0.3s;
 }
 
 nav ul li {
@@ -41,10 +60,40 @@ section {
     padding: 20px;
     max-width: 800px;
     margin: auto;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+section h2 {
+    color: #4a90e2;
+    margin-bottom: 20px;
 }
 
 h2, h3 {
     color: #4a90e2;
+}
+
+button {
+    background-color:#4a90e2;
+    color: white;
+    padding: 10px 16px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.game-card {
+    background-color: #f9f9f9;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 400px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
 #ticTacToe {
@@ -202,6 +251,66 @@ h2, h3 {
     font-size: 18px;
     color: #333;
     animation: fadeIn 0.5s ease-in-out;
+}
+
+#coinToss, #diceRoll {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+#mathQuiz {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+#coinToss img, #diceRoll img {
+    margin: 15px 0;
+}
+
+#mathQuiz input {
+    padding: 10px;
+    width: 200px;
+    border-radius: 5px;
+    border: 2px solid #ccc;
+    font-size: 16px;
+    text-align: center;
+}
+
+.quiz-buttons button {
+    margin: 5px;
+}
+
+#rpsResult, #guessResult, #coinResult, #diceResult {
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+#mathResult {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+#mathScore {
+    font-size: 16px;
+    margin-top: 5px;
+    color: #333;
+}
+
+
+#coinImage, #diceImage {
+    transition: transform 0.3s ease;
+    margin-top: 10px;
+}
+
+#coinImage:hover, #diceImage:hover {
+    transform: rotate(20deg) scale(1.05);
 }
 
 footer {

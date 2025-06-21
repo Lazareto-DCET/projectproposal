@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Snakes and Ladders</title>
+    <link rel="stylesheet" href="snakes-and-ladders.css">
+</head>
+<body>
+    <header>
+        <h1>🐍 Snakes and Ladders 🎲</h1>
+        <nav style="text-align: center; margin-top: 20px;">
+            <a href="index.html" class="neon-button">↩ Back to HomePage</a>
+        </nav>
+    </header>
+
+    <main>
+        <canvas id="gameBoard" width="500" height="500"></canvas>
+        <div class="controls">
+            <button onclick="rollDice()">🎲 Roll Dice</button>
+            <p id="currentPlayerDisplay">Current Player: Player 1 🟣</p>
+            <p id="diceValue">Roll the dice to begin!</p>
+            <p id="playerPositions"></p>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2025 Lazareto | All Rights Reserved</p>
+    </footer>
+
+    <script src="snakes-and-ladders.js"></script>
+</body>
+</html>
