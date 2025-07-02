@@ -13,14 +13,27 @@
         </nav>
     </header>
 
-    <main>
-        <canvas id="gameBoard" width="500" height="500"></canvas>
-        <div class="controls">
+    
+
+    <main style="display: flex; justify-content: center; align-items: flex-start; gap: 30px; margin-top: 20px;">
+        <!-- 🎛️ Controls + Dice (Left side) -->
+        <div class="controls" style="display: flex; flex-direction: column; align-items: center;">
+            <!-- 🎲 Dice Image -->
+            <img id="diceImage" src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Dice-1-b.svg"
+                width="80" height="80" alt="Dice" style="margin-bottom: 10px;">
+
+            <!-- 🕹️ Game Buttons -->
             <button onclick="rollDice()">🎲 Roll Dice</button>
-            <p id="currentPlayerDisplay">Current Player: Player 1 🟣</p>
+            <button onclick="if (confirm('Are you sure you want to restart the game?')) resetGame();">🔄 Reset Game</button>
+
+            <!-- ℹ️ Info Display -->
+            <p id="currentPlayerDisplay" style="margin-top: 15px;">Current Player: Player 1 🟣</p>
             <p id="diceValue">Roll the dice to begin!</p>
             <p id="playerPositions"></p>
         </div>
+
+        <!-- 🎮 Game Board -->
+        <canvas id="gameBoard" width="500" height="500"></canvas>
     </main>
 
     <footer>

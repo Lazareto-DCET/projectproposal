@@ -48,15 +48,15 @@ function drawBoard() {
 
 
 
-
 function drawSnakesAndLadders() {
     for (let start in snakes) {
-        drawLine(start, snakes[start], 'green');
+        drawSnake(start, snakes[start]);
     }
     for (let start in ladders) {
-        drawLine(start, ladders[start], 'orange');
+        drawLadder(start, ladders[start]);
     }
 }
+
 
 function drawLine(start, end, color) {
     const startCoords = getCoords(parseInt(start));
@@ -94,29 +94,108 @@ function getCoords(pos) {
     };
 }
 
+function drawSnake(start, end) {
+    const startCoords = getCoords(parseInt(start));
+    const endCoords = getCoords(parseInt(end));
+    
+    const midX = (startCoords.x + endCoords.x) / 2 + 20 * (Math.random() > 0.5 ? 1 : -1);
+    const midY = (startCoords.y + endCoords.y) / 2 + 20 * (Math.random() > 0.5 ? 1 : -1);
 
-function rollDice() {
-    const roll = Math.floor(Math.random() * 6) + 1;
-    document.getElementById('diceValue').innerText = `Player ${currentPlayer + 1} rolled a ${roll}`;
+    ctx.strokeStyle = '#8e44ad'; // Purple
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(startCoords.x + tileSize / 2, startCoords.y + tileSize / 2);
+    ctx.quadraticCurveTo(midX, midY, endCoords.x + tileSize / 2, endCoords.y + tileSize / 2);
+    ctx.stroke();
+    ctx.lineWidth = 1;
+}
 
-    let steps = roll;
-    animateMovement(steps);
 
-    function animateMovement(steps) {
-    if (steps <= 0) {
-        // Check for snakes or ladders after movement ends
-        let finalPos = playerPositions[currentPlayer];
-        if (snakes[finalPos]) {
-            animateSpecialMove(finalPos, snakes[finalPos], 'snake');
-        } else if (ladders[finalPos]) {
-            animateSpecialMove(finalPos, ladders[finalPos], 'ladder');
-        } else {
-            finishTurn();
-        }
-        return;
+function drawLadder(start, end) {
+    const startCoords = getCoords(parseInt(start));
+    const endCoords = getCoords(parseInt(end));
+
+    const offset = 10;
+
+    // Side rails
+    ctx.strokeStyle = '#f39c12'; // Orange
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(startCoords.x + tileSize / 2 - offset, startCoords.y + tileSize / 2);
+    ctx.lineTo(endCoords.x + tileSize / 2 - offset, endCoords.y + tileSize / 2);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(startCoords.x + tileSize / 2 + offset, startCoords.y + tileSize / 2);
+    ctx.lineTo(endCoords.x + tileSize / 2 + offset, endCoords.y + tileSize / 2);
+    ctx.stroke();
+
+    // Rungs
+    const rungs = 5;
+    for (let i = 1; i < rungs; i++) {
+        const t = i / rungs;
+        const x1 = lerp(startCoords.x + tileSize / 2 - offset, endCoords.x + tileSize / 2 - offset, t);
+        const y1 = lerp(startCoords.y + tileSize / 2, endCoords.y + tileSize / 2, t);
+        const x2 = lerp(startCoords.x + tileSize / 2 + offset, endCoords.x + tileSize / 2 + offset, t);
+        const y2 = lerp(startCoords.y + tileSize / 2, endCoords.y + tileSize / 2, t);
+
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
     }
 
-        // Move forward by 1
+    ctx.lineWidth = 1;
+}
+
+function lerp(a, b, t) {
+    return a + (b - a) * t;
+}
+
+
+function rollDice() {
+    const diceImg = document.getElementById('diceImage');
+    const diceFaces = [
+        "1/1b/Dice-1-b.svg",
+        "5/5f/Dice-2-b.svg",
+        "2/2c/Dice-3-b.svg",
+        "8/8d/Dice-4-b.svg",
+        "5/55/Dice-5-b.svg",
+        "0/08/Dice-6-b.svg"
+    ];
+
+    // Show random faces quickly (fake rolling effect)
+    let rollCount = 10;
+    let rollInterval = setInterval(() => {
+        const randomFace = Math.floor(Math.random() * 6);
+        diceImg.src = `https://upload.wikimedia.org/wikipedia/commons/${diceFaces[randomFace]}`;
+    }, 100);
+
+    setTimeout(() => {
+        clearInterval(rollInterval);
+
+        // Final roll result
+        const roll = Math.floor(Math.random() * 6) + 1;
+        diceImg.src = `https://upload.wikimedia.org/wikipedia/commons/${diceFaces[roll - 1]}`;
+
+        document.getElementById('diceValue').innerText = `Player ${currentPlayer + 1} rolled a ${roll}`;
+        animateMovement(roll); // Continue with actual game logic
+
+    }, 1000); // 1 second of animation
+
+    function animateMovement(steps) {
+        if (steps <= 0) {
+            let finalPos = playerPositions[currentPlayer];
+            if (snakes[finalPos]) {
+                animateSpecialMove(finalPos, snakes[finalPos], 'snake');
+            } else if (ladders[finalPos]) {
+                animateSpecialMove(finalPos, ladders[finalPos], 'ladder');
+            } else {
+                finishTurn();
+            }
+            return;
+        }
+
         if (playerPositions[currentPlayer] < 100) {
             playerPositions[currentPlayer]++;
         }
@@ -127,7 +206,6 @@ function rollDice() {
     }
 
     function animateSpecialMove(from, to, type) {
-        let steps = Math.abs(to - from);
         let direction = to > from ? 1 : -1;
 
         function step() {
@@ -145,42 +223,22 @@ function rollDice() {
         step();
     }
 
-
-    playerPositions[currentPlayer] += roll;
-    if (playerPositions[currentPlayer] > 100) playerPositions[currentPlayer] = 100;
-
-    const newPos = snakes[playerPositions[currentPlayer]] || ladders[playerPositions[currentPlayer]] || playerPositions[currentPlayer];
-    playerPositions[currentPlayer] = newPos;
-
-    updatePositionText();
-
-    if (newPos === 100) {
-        setTimeout(() => {
-            alert(`🎉 Player ${currentPlayer + 1} wins!`);
-            resetGame();
-        }, 100);
-    } else {
-        currentPlayer = (currentPlayer + 1) % playerPositions.length;
-        document.getElementById('currentPlayerDisplay').innerText = `Current Player: Player ${currentPlayer + 1} ${currentPlayer === 0 ? '🔴' : '🔵'}`;
-    }
-
     function finishTurn() {
-    if (playerPositions[currentPlayer] === 100) {
-        setTimeout(() => {
-            alert(`🎉 Player ${currentPlayer + 1} wins!`);
-            resetGame();
-        }, 300);
-        return;
+        if (playerPositions[currentPlayer] >= 100) {
+            setTimeout(() => {
+                alert(`🎉 Player ${currentPlayer + 1} wins!`);
+                resetGame();
+            }, 300);
+            return;
+        }
+
+        currentPlayer = (currentPlayer + 1) % playerPositions.length;
+        document.getElementById('currentPlayerDisplay').innerText =
+            `Current Player: Player ${currentPlayer + 1} ${currentPlayer === 0 ? '🔴' : '🔵'}`;
     }
-
-    currentPlayer = (currentPlayer + 1) % playerPositions.length;
-    document.getElementById('currentPlayerDisplay').innerText =
-        `Current Player: Player ${currentPlayer + 1} ${currentPlayer === 0 ? '🔴' : '🔵'}`;
-    }
-
-
-    drawBoard();
 }
+
+
 
 function updatePositionText() {
     document.getElementById('playerPositions').innerText =
